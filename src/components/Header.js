@@ -22,7 +22,7 @@ function Header({ loggedIn, email, signOut }) {
       return (
         <>
           <p className="header__mail">{email}</p>
-          <button className="header__link header__link_logged-in" onClick={signOut}>
+          <button to="/sign-in" className="header__link header__link_logged-in" onClick={signOut}>
             Выйти
           </button>
         </>
