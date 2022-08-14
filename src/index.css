@@ -50,5 +50,18 @@
 @import './blocks/popup/__text/_type-error/popup__text_type-error.css';
 @import './blocks/popup-info/__image/popup-info__image.css';
 @import './blocks/popup-info/__info/popup-info__info.css';
-
-
+@import './blocks/login/login.css';
+@import './blocks/login/__button-container/login__button-container.css';
+@import './blocks/login/__form-input/login__form-input.css';
+@import './blocks/login/__form/login__form.css';
+@import './blocks/login/__link/login__link.css';
+@import './blocks/login/__welcome/login__welcome.css';
+@import './blocks/register/register.css';
+@import './blocks/register/__button-container/register__button-container.css';
+@import './blocks/register/__form-input/register__form-input.css';
+@import './blocks/register/__form/register__form.css';
+@import './blocks/register/__link/register__link.css';
+@import './blocks/register/__login-link/register__login-link.css';
+@import './blocks/register/__signin-text/register__signin-text.css';
+@import './blocks/register/__signin/register__signin.css';
+@import './blocks/register/__welcome/register__welcome.css';

@@ -1,7 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import * as auth from '../utils/auth';
-import './styles/Login.css';
 
 class Login extends React.Component {
   constructor(props) {
@@ -30,8 +29,8 @@ class Login extends React.Component {
       .authorize(this.state.email, this.state.password)
       .then((data) => {
         if (data === undefined) {
-            this.props.setIsLoginDone(false);
-            this.props.onOpen();
+          this.props.setIsLoginDone(false);
+          this.props.onOpen();
         }
         if (data.token) {
           this.props.setUserEmail(this.state.email);
@@ -55,6 +54,7 @@ class Login extends React.Component {
             placeholder="Email"
             value={this.state.email}
             onChange={this.handleChange}
+            className="login__form-input"
           />
           <input
             required
@@ -63,6 +63,7 @@ class Login extends React.Component {
             placeholder="Пароль"
             value={this.state.password}
             onChange={this.handleChange}
+            className="login__form-input"
           />
           <div className="login__button-container">
             <button type="submit" onSubmit={this.handleSubmit} className="login__link">
