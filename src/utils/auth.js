@@ -10,12 +10,14 @@ export const register = (email, password) => {
     body: JSON.stringify({ email, password }),
   })
     .then((response) => {
+      if (!response.ok) {
+        return Promise.reject(`Ошибка: ${response.status}`);
+      }
       return response.json();
     })
     .then((res) => {
       return res;
-    })
-    .catch((err) => console.log(err));
+    });
 };
 
 export const authorize = (email, password) => {

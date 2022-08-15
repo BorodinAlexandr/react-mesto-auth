@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import * as auth from '../utils/auth';
 
 class Register extends React.Component {
   constructor(props) {
@@ -25,15 +24,7 @@ class Register extends React.Component {
     if (!this.state.email || !this.state.password) {
       return;
     }
-    auth.register(this.state.email, this.state.password).then((res) => {
-      if (res.error || res.statusCode === 400) {
-        this.props.setIsRegisterDone(false);
-        this.props.onOpen();
-        return;
-      }
-      this.props.setIsRegisterDone(true);
-      this.props.onOpen();
-    });
+    this.props.onSubmit({ email: this.state.email, password: this.state.password });
   };
   render() {
     return (

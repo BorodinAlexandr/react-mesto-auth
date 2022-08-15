@@ -35,31 +35,35 @@ function App() {
   const history = useHistory();
 
   useEffect(() => {
-    api
-      .getUserInfo()
-      .then((res) => {
-        setCurrentUser({
-          name: `${res.name}`,
-          description: `${res.about}`,
-          avatar: `${res.avatar}`,
-          id: `${res._id}`,
+    if (loggedIn) {
+      api
+        .getUserInfo()
+        .then((res) => {
+          setCurrentUser({
+            name: `${res.name}`,
+            description: `${res.about}`,
+            avatar: `${res.avatar}`,
+            id: `${res._id}`,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
         });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
 
-  useEffect(() => {
-    api
-      .getInitialCards()
-      .then((res) => {
-        setCards(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+      api
+        .getInitialCards()
+        .then((res) => {
+          setCards(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [loggedIn]);
+
+  /*  useEffect(() => {
+ 
+  }, []); */
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen);
@@ -162,6 +166,39 @@ function App() {
       });
   }
 
+  function handleRegisterSubmit({ email, password }) {
+    auth
+      .register(email, password)
+      .then((res) => {
+        setIsDone(true);
+        openInfoTooltip();
+        history.push('/sign-in');
+      })
+      .catch((err) => {
+        setIsDone(false);
+        openInfoTooltip();
+        console.log(err);
+      });
+  }
+
+  function handleLoginSubmit({ email, password, clearInputs }) {
+    auth
+      .authorize(email, password)
+      .then((data) => {
+        if (data.token) {
+          setUserEmail(email);
+          handleLogin();
+          clearInputs();
+          history.push('/');
+        }
+      })
+      .catch((err) => {
+        setIsDone(false);
+        openInfoTooltip();
+        console.log(err);
+      });
+  }
+
   function handleTokenCheck() {
     if (localStorage.getItem('jwt')) {
       const jwt = localStorage.getItem('jwt');
@@ -195,6 +232,10 @@ function App() {
 
   function openInfoTooltip() {
     setIsInfoTooltipOpen(true);
+  }
+
+  function setInfotooltipText() {
+    return isDone ? 'Вы успешно зарегистрировались!' : 'Что-то пошло не так! Попробуйте ещё раз';
   }
 
   return (
@@ -233,21 +274,16 @@ function App() {
             />
           </ProtectedRoute>
           <Route exact path="/sign-up">
-            <Register setIsRegisterDone={setIsDone} onOpen={openInfoTooltip} />
+            <Register onSubmit={handleRegisterSubmit} />
           </Route>
           <Route exact path="/sign-in">
-            <Login
-              handleLogin={handleLogin}
-              onOpen={openInfoTooltip}
-              setIsLoginDone={setIsDone}
-              setUserEmail={(email) => setUserEmail(email)}
-            />
+            <Login onSubmit={handleLoginSubmit} />
           </Route>
           <Route exact path="/">
             {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
           </Route>
         </Switch>
-        <InfoTooltip isOpen={isInfoTooltipOpen} onClose={closeAllPopups} isDone={isDone} />
+        <InfoTooltip isOpen={isInfoTooltipOpen} onClose={closeAllPopups} isDone={isDone} text={setInfotooltipText()} />
       </userContext.Provider>
     </div>
   );
